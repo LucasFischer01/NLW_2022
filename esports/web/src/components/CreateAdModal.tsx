@@ -17,7 +17,6 @@ export function CreateAdModal() {
     const [games, setGames] = useState<Game[]>([])
     const [weekDays, setWeekDays] = useState<string[]>([])
     const [useVoiceChannel, setUseVoiceChannel] = useState(false)
-    console.log(weekDays)
 
     useEffect(() => {
         axios('http://localhost:3333/games').then(response => {
@@ -27,17 +26,11 @@ export function CreateAdModal() {
 
     async function handleCreateAd(event: FormEvent) {
         event.preventDefault();
-        console.log(weekDays)
-
 
         const formData = new FormData(event.target as HTMLFormElement)
         const data = Object.fromEntries(formData)
 
-        console.log(data.weekDays);
-
-        if (!data.name) {
-            return;
-        }
+        if (!data.name) return
 
         try {
             await axios.post(`http://localhost:3333/games/${data.game}/ads`, {
@@ -51,8 +44,8 @@ export function CreateAdModal() {
             })
 
             alert('Anúncio criado com sucesso!')
-        } catch (err) {
-            console.log(err)
+        } catch (error) {
+            console.log(error)
             alert('Erro ao criar o anúncio!')
         }
     }
