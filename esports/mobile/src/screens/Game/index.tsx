@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Image, View, TouchableOpacity, FlatList, Text } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useRoute, useNavigation } from '@react-navigation/native';
@@ -32,7 +32,7 @@ export function Game() {
     fetch(`http://192.168.1.214:3333/ads/${adsId}/discord`)
       .then(response => response.json())
       .then(data => {
-        console.log(data)
+        setDiscordDuoSelected(data.discord)
       });
   }
 
@@ -76,16 +76,15 @@ export function Game() {
 
         <FlatList
           data={duos}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DuoCard
-              data={item}
-              onConnect={() => getDiscordUser(item.id)}
-            />
+            <DuoCard data={item} onConnect={() => getDiscordUser(item.id)} />
           )}
           horizontal
-          style={[styles.containerList]}
-          contentContainerStyle={[duos.length > 0 ? styles.contentList : styles.emptyListContent]}
+          style={styles.containerList}
+          contentContainerStyle={[
+            duos.length > 0 ? styles.contentList : styles.emptyListContent,
+          ]}
           showsHorizontalScrollIndicator={false}
           ListEmptyComponent={() => (
             <Text style={styles.emptyListText}>
@@ -96,10 +95,9 @@ export function Game() {
 
         <DuoMatch
           visible={discordDuoSelected.length > 0}
-          discord="luke#4545"
-          onClose={() => setDiscordDuoSelected('')}
+          discord={discordDuoSelected}
+          onClose={() => setDiscordDuoSelected("")}
         />
-
       </SafeAreaView>
     </Background>
   );
